@@ -18,6 +18,30 @@
 }
 .form label textarea {
   height: 60px;
-  width: 80%;
+  width: 500px;
   border: none;
+  border-radius: 5px;
+}
+.form input {
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 18px;
+  color: var(--color-bg_light);
+  font-weight: 100;
+  outline: none;
+  border: none;
+  width: 100%;
+}
+.form select {
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 18px;
+}
+.add-btn,
+.submit-btn {
+  padding: 5px 30px;
+  border: 1px solid white;
+  border-radius: 5px;
+  background-color: var(--color-bg_light);
+  color: white;
 }

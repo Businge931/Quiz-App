@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import "./App.css";
 import Quiz from "./components/Quiz";
@@ -22,11 +22,18 @@ function App() {
     score: 0,
     correctAnswers: 0,
     wrongAnswers: 0,
+    timeTaken: 0,
   });
+
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    // return () => ;
+  }, [activeQuestion, showResults]);
 
   const onStartQuiz = () => {
     const dbReference = collection(db, "questions");
-    onSnapshot(dbReference, (snapshot) => {
+    const unsub = onSnapshot(dbReference, (snapshot) => {
       let results = [];
       snapshot.forEach((doc) => {
         results.push({ id: doc.id, ...doc.data() });
@@ -35,12 +42,28 @@ function App() {
       const categories = results.filter(
         (result) => result.category === category
       );
-      console.log(categories);
+      // console.log(categories);
       setQuestions(categories);
       setShowQuiz(true);
     });
 
+    if (!showResults) {
+      let timeLeft = 15;
+      timerRef.current = setInterval(() => {
+        if (timeLeft === 0) {
+          clearInterval(timerRef.current);
+          onClickNext();
+        } else {
+          timeLeft--;
+          setResults((prev) => ({ ...prev, timeTaken: prev.timeTaken + 1 }));
+        }
+      }, 1000);
+    }
     //remember to unsubscribe from database when component unmounts
+    return () => {
+      clearInterval(timerRef.current);
+      unsub();
+    };
   };
 
   const onAttemptAgain = () => {
@@ -56,6 +79,7 @@ function App() {
   };
 
   const onClickNext = () => {
+    clearInterval(timerRef.current);
     setSelectedAnswerIndex(null);
     setResults((prevResults) =>
       selectedAnswer
@@ -110,9 +134,11 @@ function App() {
           quizName={quizName}
           onEditQuiz={onEditQuiz}
           showEditForm={showEditForm}
+          setShowEditForm={setShowEditForm}
+          setShowResults={setShowResults}
         />
       )}
-      {/* <EditForm questions={questions} /> */}
+      <p>{15 - results.timeTaken}s</p>
     </div>
   );
 }

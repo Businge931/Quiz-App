@@ -9,29 +9,38 @@ const Results = ({
   onAttemptAgain,
   onEditQuiz,
   showEditForm,
+  setShowEditForm,
+  setShowResults,
 }) => {
   return (
     <>
-      <div className="result">
-        <h3>Result for {quizName}</h3>
-        <p>
-          Total Questions: <span>{questions?.length}</span>
-        </p>
-        <p>
-          Total Score:<span> {results.score}</span>
-        </p>
-        <p>
-          Correct Answers:<span> {results.correctAnswers}</span>
-        </p>
-        <p>
-          Wrong Answers:<span> {results.wrongAnswers}</span>
-        </p>
-        <div>
-          <button onClick={() => onAttemptAgain()}>Attempt Again</button>
-          <button onClick={() => onEditQuiz()}>Edit Quiz</button>
+      {!showEditForm ? (
+        <div className="result">
+          <h3>Result for {quizName}</h3>
+          <p>
+            Total Questions: <span>{questions?.length}</span>
+          </p>
+          <p>
+            Total Score:<span> {results.score}</span>
+          </p>
+          <p>
+            Correct Answers:<span> {results.correctAnswers}</span>
+          </p>
+          <p>
+            Wrong Answers:<span> {results.wrongAnswers}</span>
+          </p>
+          <div>
+            <button onClick={() => onAttemptAgain()}>Attempt Again</button>
+            <button onClick={() => onEditQuiz()}>Edit Quiz</button>
+          </div>
         </div>
-      </div>
-      {showEditForm && <EditForm />}
+      ) : (
+        <EditForm
+          questions={questions}
+          setShowEditForm={setShowEditForm}
+          setShowResults={setShowResults}
+        />
+      )}
     </>
   );
 };

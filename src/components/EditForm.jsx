@@ -3,11 +3,12 @@ import "./EditForm.css";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 
-const EditForm = ({ questions, category }) => {
+const EditForm = ({ setShowEditForm, setShowResults }) => {
   const [question, setQuestion] = useState("");
   const [choices, setChoices] = useState([]);
   const [newChoice, setNewChoice] = useState("");
   const [correctAnswer, setCorrectAnswer] = useState("");
+  const [category, setCategory] = useState("");
 
   const choiceRef = useRef(null);
 
@@ -20,9 +21,8 @@ const EditForm = ({ questions, category }) => {
       correctAnswer,
       category,
     });
-
-    console.log(questions);
-    // console.log(question, choices, correctAnswer);
+    setShowEditForm(false);
+    setShowResults(false);
   };
 
   const addChoice = (e) => {
@@ -43,6 +43,7 @@ const EditForm = ({ questions, category }) => {
           type="text"
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
+          required
         />
       </label>
       <label>
@@ -53,24 +54,35 @@ const EditForm = ({ questions, category }) => {
           ref={choiceRef}
         />
         <span>
-          <button onClick={addChoice}>Add Choice</button>
+          <button onClick={addChoice} className="add-btn">
+            Add Choice
+          </button>
         </span>
       </label>
       <p>
-        Your choices:
         {choices.map((c) => (
           <em key={c}> {c}, </em>
         ))}
       </p>
       <label>
-        <span>Correct Answer:</span>
+        <span>Category:</span>
+        <select required onChange={(e) => setCategory(e.target.value)}>
+          <option value="react">React</option>
+          <option value="html">HTML</option>
+          <option value="css">CSS</option>
+          <option value="javascript">JavaScript</option>
+        </select>
+      </label>
+      <label>
+        <span>Answer:</span>
         <input
           value={correctAnswer}
           onChange={(e) => setCorrectAnswer(e.target.value)}
+          required
         />
       </label>
 
-      <button>Submit</button>
+      <button className="submit-btn">Submit</button>
     </form>
   );
 };

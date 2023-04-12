@@ -12,6 +12,7 @@
 }
 h1 {
   color: var(--color-white);
+  padding-top: 20px;
 }
 .quiz-form label {
   padding: 0 15px;
@@ -39,6 +40,15 @@ input:focus {
 .select:focus {
   border: none;
 }
+/* .select option {
+  background-color: var(--color-white);
+  padding: 10px;
+  margin: 10px;
+}
+.select option:hover {
+  background: var(--color-bg_light);
+  color: var(--color-white);
+} */
 .description-options {
   font-size: 18px;
   color: var(--color-bg_light);
@@ -55,4 +65,10 @@ input:focus {
 .start-button:hover {
   background-color: var(--color-white);
   color: var(--color-bg_light);
+}
+.start-button:disabled {
+  background: var(--color-bg_grey);
+  color: #9fa3a9;
+  cursor: not-allowed;
+  border: none;
 }

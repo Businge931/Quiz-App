@@ -7,6 +7,8 @@ function Form({
   setGradingPoints,
   setQuizname,
   quizName,
+  category,
+  isQuizPlaying,
 }) {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -24,16 +26,24 @@ function Form({
             placeholder="Enter quiz name"
             value={quizName}
             onChange={(e) => setQuizname(e.target.value)}
+            required
           />
         </label>
         <label>
-          Description:
+          Category:
           <select
             className="select"
             onChange={(e) => setCategory(e.target.value)}
-            // placeholder="Select Category"
+            value={category ? category : ""}
           >
-            <option className="description-options">Select Category</option>
+            <option
+              className="description-options"
+              value=""
+              disabled
+              defaultValue
+            >
+              Select Category
+            </option>
             <option value="react" className="description-options">
               React
             </option>
@@ -53,13 +63,14 @@ function Form({
           <select
             className="select"
             onChange={(e) => setGradingPoints(e.target.value)}
+            // value={gra}
           >
             <option value={5}>5</option>
             <option value={10}>10</option>
           </select>
         </label>
 
-        <button type="submit" className="start-button">
+        <button type="submit" className="start-button" disabled={isQuizPlaying}>
           start quiz
         </button>
       </form>

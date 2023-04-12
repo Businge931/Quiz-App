@@ -3,6 +3,7 @@ import "./Quiz.css";
 import TrashIcon from "../assets/trashcan-icon.svg";
 import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
+import EditForm from "./EditQuizForm/EditForm";
 
 function Quiz({
   selectedAnswerIndex,
@@ -11,6 +12,11 @@ function Quiz({
   questions,
   activeQuestion,
   showQuiz,
+  isLoading,
+  category,
+  onEditQuiz,
+  showEditForm,
+  restartQuiz,
 }) {
   const [showWarning, setShowWarning] = useState(false);
 
@@ -24,13 +30,23 @@ function Quiz({
     setShowWarning(false);
   };
 
-  const openWarning = () => {
-    setShowWarning(true);
+  const handleWarning = () => {
+    setShowWarning(!showWarning);
   };
 
-  const closeWarning = () => {
-    setShowWarning(false);
-  };
+  if (questions?.length === 0) {
+    return (
+      <div className="">
+        <p className="no-questions">{`No questions to load for ${category}`}</p>
+        {!showEditForm && (
+          <button onClick={() => onEditQuiz()} className="add-btn">
+            Add Questions
+          </button>
+        )}
+        {showEditForm && <EditForm />}
+      </div>
+    );
+  }
 
   return (
     <>
@@ -74,7 +90,7 @@ function Quiz({
               <img
                 src={TrashIcon}
                 alt="delete question icon"
-                onClick={openWarning}
+                onClick={handleWarning}
               />
               <button
                 onClick={onClickNext}
@@ -85,7 +101,11 @@ function Quiz({
             </div>
           </>
         ) : (
-          <p>Fill form to start</p>
+          <p>
+            {!isLoading
+              ? "Welcome!  To attempt Quiz, fill the above form"
+              : "Loading..."}
+          </p>
         )}
         {showWarning && (
           <div className="warning">
@@ -93,12 +113,18 @@ function Quiz({
               <p>Are you sure you want to Permenently delete this question?</p>
               <div>
                 <button onClick={() => deleteQuestion(questionId)}>YES</button>
-                <button onClick={closeWarning}>NO</button>
+                <button onClick={handleWarning}>NO</button>
               </div>
             </div>
           </div>
         )}
       </div>
+
+      {showQuiz && (
+        <button onClick={restartQuiz} className="restart-button">
+          Restart Quiz
+        </button>
+      )}
     </>
   );
 }

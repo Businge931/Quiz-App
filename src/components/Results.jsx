@@ -1,6 +1,6 @@
 import React from "react";
 import "./Results.css";
-import EditForm from "./EditForm";
+import EditForm from "./EditQuizForm/EditForm";
 
 const Results = ({
   questions,
@@ -31,7 +31,7 @@ const Results = ({
           </p>
           <div>
             <button onClick={() => onAttemptAgain()}>Attempt Again</button>
-            <button onClick={() => onEditQuiz()}>Edit Quiz</button>
+            <button onClick={() => onEditQuiz()}>Add Questions </button>
           </div>
         </div>
       ) : (

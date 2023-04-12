@@ -103,3 +103,32 @@
   color: #fc4747;
   border: 2px solid #fc4747;
 }
+.add-btn {
+  padding: 5px 30px;
+  border: 1px solid white;
+  border-radius: 5px;
+  background-color: var(--color-bg_light);
+  color: white;
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  background-color: var(--color-white);
+  color: var(--color-bg_light);
+  border: 2px solid var(--color-bg_light);
+}
+.no-questions {
+  margin: 20px;
+}
+.restart-button {
+  padding: 15px;
+  color: var(--color-white);
+  background-color: #fc47475e;
+  border-radius: 5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+}
+.restart-button:hover {
+  background-color: #fc4747;
+}

@@ -1,0 +1,92 @@
+.form {
+  max-width: 700px;
+  height: fit-content;
+  margin: 30px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background: var(--color-bg_light);
+  color: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+.form label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  justify-content: space-between;
+}
+.form label textarea {
+  height: 80px;
+  min-width: 660px;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  padding: 5px;
+}
+
+.choices-container {
+  display: flex;
+  gap: 25px;
+}
+.choices-container input {
+  min-width: 500px;
+}
+.choices {
+  width: 100%;
+  border-bottom: 1px solid #ffffff30;
+  height: 30px;
+  text-align: left;
+}
+.category_answer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.category select {
+  width: 300px;
+}
+.answer select {
+  width: 300px;
+}
+
+.form input {
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 18px;
+  color: var(--color-bg_light);
+  font-weight: 100;
+  outline: none;
+  border: none;
+}
+.form select {
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 18px;
+}
+.add-btn,
+.submit-btn {
+  padding: 5px 30px;
+  border: 1px solid white;
+  border-radius: 5px;
+  background-color: var(--color-bg_light);
+  color: white;
+  cursor: pointer;
+  height: 100%;
+}
+
+.add-btn:hover,
+.submit-btn:hover {
+  background-color: var(--color-white);
+  color: var(--color-bg_light);
+}
+.edit-btns {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.edit-btns button {
+  margin: 10px 0;
+}

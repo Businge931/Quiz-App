@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 
 import "./App.css";
 import Quiz from "./components/Quiz";
@@ -13,10 +13,12 @@ function App() {
   const [selectedAnswer, setSelectedAnswer] = useState();
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
   const [showResults, setShowResults] = useState(false);
+  const [isQuizPlaying, setIsQuizPlaying] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
   const [category, setCategory] = useState(null);
   const [quizName, setQuizname] = useState("");
   const [showEditForm, setShowEditForm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [gradingPoints, setGradingPoints] = useState(5);
   const [results, setResults] = useState({
     score: 0,
@@ -24,14 +26,14 @@ function App() {
     wrongAnswers: 0,
     timeTaken: 0,
   });
+  const [timer, setTimer] = useState(30);
+  const [timerRef, setTimerRef] = useState(null);
 
-  const timerRef = useRef(null);
-
-  useEffect(() => {
-    // return () => ;
-  }, [activeQuestion, showResults]);
+  // const timerRef = useRef(null);
 
   const onStartQuiz = () => {
+    setIsLoading(true);
+    setIsQuizPlaying(true);
     const dbReference = collection(db, "questions");
     const unsub = onSnapshot(dbReference, (snapshot) => {
       let results = [];
@@ -42,23 +44,26 @@ function App() {
       const categories = results.filter(
         (result) => result.category === category
       );
-      // console.log(categories);
+
       setQuestions(categories);
       setShowQuiz(true);
+      setIsLoading(false);
+      setTimer(30);
     });
+    // setTimerRef(
+    //   setInterval(() => {
+    //     setTimer((prevTimer) => {
+    //       if (prevTimer === 0) {
+    //         onClickNext();
+    //         console.log(prevTimer);
+    //         return prevTimer;
+    //       } else {
+    //         return prevTimer - 1;
+    //       }
+    //     });
+    //   }, 1000)
+    // );
 
-    if (!showResults) {
-      let timeLeft = 15;
-      timerRef.current = setInterval(() => {
-        if (timeLeft === 0) {
-          clearInterval(timerRef.current);
-          onClickNext();
-        } else {
-          timeLeft--;
-          setResults((prev) => ({ ...prev, timeTaken: prev.timeTaken + 1 }));
-        }
-      }, 1000);
-    }
     //remember to unsubscribe from database when component unmounts
     return () => {
       clearInterval(timerRef.current);
@@ -68,18 +73,27 @@ function App() {
 
   const onAttemptAgain = () => {
     setQuizname("");
-    setGradingPoints(null);
-    setCategory(null);
+    setGradingPoints("");
+    setCategory(category);
     setShowResults(false);
-    setShowQuiz(false);
+    setShowQuiz(true);
+    setResults({
+      score: 0,
+      correctAnswers: 0,
+      wrongAnswers: 0,
+      timeTaken: 0,
+    });
+    setIsQuizPlaying(true);
   };
 
   const onEditQuiz = () => {
     setShowEditForm(true);
+    setIsQuizPlaying(true);
   };
 
-  const onClickNext = () => {
-    clearInterval(timerRef.current);
+  function onClickNext() {
+    clearInterval(timerRef);
+    setIsLoading(true);
     setSelectedAnswerIndex(null);
     setResults((prevResults) =>
       selectedAnswer
@@ -96,8 +110,24 @@ function App() {
     } else {
       setActiveQuestion(0);
       setShowResults(true);
+      setShowEditForm(false);
+      setIsQuizPlaying(false);
     }
-  };
+    setIsLoading(false);
+    setTimer(30);
+    const timerInterval = setInterval(() => {
+      setTimer((prevTimer) => {
+        if (prevTimer === 1) {
+          clearInterval(timerInterval);
+          onClickNext();
+          return 30;
+        } else {
+          return prevTimer - 1;
+        }
+      });
+    }, 1000);
+    setTimerRef(timerInterval);
+  }
 
   const onSelectAnswer = (answer, index) => {
     setSelectedAnswerIndex(index);
@@ -108,6 +138,21 @@ function App() {
     }
   };
 
+  const restartQuiz = () => {
+    setQuizname("");
+    setGradingPoints("");
+    setCategory("");
+    setShowQuiz(false);
+    setIsQuizPlaying(false);
+    setResults({
+      score: 0,
+      correctAnswers: 0,
+      wrongAnswers: 0,
+      timeTaken: 0,
+    });
+    // setQuestions([]);
+  };
+
   return (
     <div className="App">
       <Form
@@ -116,6 +161,8 @@ function App() {
         onStartQuiz={onStartQuiz}
         setQuizname={setQuizname}
         quizName={quizName}
+        category={category}
+        isQuizPlaying={isQuizPlaying}
       />
       {!showResults ? (
         <Quiz
@@ -125,6 +172,11 @@ function App() {
           onSelectAnswer={onSelectAnswer}
           activeQuestion={activeQuestion}
           showQuiz={showQuiz}
+          isLoading={isLoading}
+          category={category}
+          onEditQuiz={onEditQuiz}
+          restartQuiz={restartQuiz}
+          showEditForm={showEditForm}
         />
       ) : (
         <Results
@@ -138,7 +190,7 @@ function App() {
           setShowResults={setShowResults}
         />
       )}
-      <p>{15 - results.timeTaken}s</p>
+      <p>{timer}s</p>
     </div>
   );
 }

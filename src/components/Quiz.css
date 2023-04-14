@@ -8,7 +8,8 @@
 }
 .quiz-question_number {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: space-between;
 }
 .quiz .active-question-no {
   font-size: 32px;
@@ -23,6 +24,14 @@
 .quiz-heading {
   font-weight: 500;
   font-size: 18px;
+}
+.timer {
+  padding: 15px;
+  font-size: 18px;
+}
+.timer span {
+  color: #5a698f44;
+  font-size: 16px;
 }
 .quiz-text {
   text-align: left;

@@ -18,7 +18,7 @@ const EditForm = ({ setShowEditForm, setShowResults }) => {
     await addDoc(ref, {
       question,
       choices,
-      correctAnswer, //not yet working
+      correctAnswer,
       category,
     });
 
@@ -84,7 +84,9 @@ const EditForm = ({ setShowEditForm, setShowResults }) => {
             required
             onChange={(e) => setCategory(e.target.value)}
           >
-            <option value="choose category">Choose Category</option>
+            <option value="" disabled defaultValue>
+              Choose Category
+            </option>
             <option value="react">React</option>
             <option value="html">HTML</option>
             <option value="css">CSS</option>

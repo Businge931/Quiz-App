@@ -26,14 +26,16 @@ function App() {
     wrongAnswers: 0,
   });
   const [timeRemaining, setTimeRemaining] = useState(10);
+  const [countdownInterval, setCountdownInterval] = useState(null);
 
   const startCountdown = (questionIndex) => {
-    const countdownInterval = setInterval(() => {
+    clearInterval(countdownInterval);
+    const newCountdownInterval = setInterval(() => {
       setTimeRemaining((countdown) => countdown - 1);
     }, 1000);
-
+    setCountdownInterval(newCountdownInterval);
     setTimeout(() => {
-      clearInterval(countdownInterval);
+      clearInterval(newCountdownInterval);
       if (timeRemaining === 0) {
         onClickNext(questionIndex);
       }
@@ -59,8 +61,8 @@ function App() {
       setIsLoading(false);
     });
 
-    startCountdown(activeQuestion);
     setTimeRemaining(10);
+    startCountdown(activeQuestion);
 
     //remember to unsubscribe from database when component unmounts
     return () => {
@@ -80,7 +82,7 @@ function App() {
       wrongAnswers: 0,
     });
     setIsQuizPlaying(true);
-    setTimeRemaining(60);
+    setTimeRemaining(10);
   };
 
   const onEditQuiz = () => {

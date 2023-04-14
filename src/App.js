@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 import "./App.css";
 import Quiz from "./components/Quiz";
@@ -24,12 +24,21 @@ function App() {
     score: 0,
     correctAnswers: 0,
     wrongAnswers: 0,
-    timeTaken: 0,
   });
-  const [timer, setTimer] = useState(30);
-  const [timerRef, setTimerRef] = useState(null);
+  const [timeRemaining, setTimeRemaining] = useState(10);
 
-  // const timerRef = useRef(null);
+  const startCountdown = (questionIndex) => {
+    const countdownInterval = setInterval(() => {
+      setTimeRemaining((countdown) => countdown - 1);
+    }, 1000);
+
+    setTimeout(() => {
+      clearInterval(countdownInterval);
+      if (timeRemaining === 0) {
+        onClickNext(questionIndex);
+      }
+    }, 10000);
+  };
 
   const onStartQuiz = () => {
     setIsLoading(true);
@@ -48,25 +57,13 @@ function App() {
       setQuestions(categories);
       setShowQuiz(true);
       setIsLoading(false);
-      setTimer(30);
     });
-    // setTimerRef(
-    //   setInterval(() => {
-    //     setTimer((prevTimer) => {
-    //       if (prevTimer === 0) {
-    //         onClickNext();
-    //         console.log(prevTimer);
-    //         return prevTimer;
-    //       } else {
-    //         return prevTimer - 1;
-    //       }
-    //     });
-    //   }, 1000)
-    // );
+
+    startCountdown(activeQuestion);
+    setTimeRemaining(10);
 
     //remember to unsubscribe from database when component unmounts
     return () => {
-      clearInterval(timerRef.current);
       unsub();
     };
   };
@@ -81,9 +78,9 @@ function App() {
       score: 0,
       correctAnswers: 0,
       wrongAnswers: 0,
-      timeTaken: 0,
     });
     setIsQuizPlaying(true);
+    setTimeRemaining(60);
   };
 
   const onEditQuiz = () => {
@@ -91,8 +88,7 @@ function App() {
     setIsQuizPlaying(true);
   };
 
-  function onClickNext() {
-    clearInterval(timerRef);
+  function onClickNext(questionIndex) {
     setIsLoading(true);
     setSelectedAnswerIndex(null);
     setResults((prevResults) =>
@@ -107,26 +103,16 @@ function App() {
 
     if (questions && activeQuestion !== questions.length - 1) {
       setActiveQuestion((prevQtn) => prevQtn + 1);
+      setTimeRemaining(10);
+      startCountdown((prevQtn) => prevQtn + 1);
     } else {
       setActiveQuestion(0);
       setShowResults(true);
       setShowEditForm(false);
       setIsQuizPlaying(false);
+      setTimeRemaining(null);
     }
     setIsLoading(false);
-    setTimer(30);
-    const timerInterval = setInterval(() => {
-      setTimer((prevTimer) => {
-        if (prevTimer === 1) {
-          clearInterval(timerInterval);
-          onClickNext();
-          return 30;
-        } else {
-          return prevTimer - 1;
-        }
-      });
-    }, 1000);
-    setTimerRef(timerInterval);
   }
 
   const onSelectAnswer = (answer, index) => {
@@ -150,7 +136,8 @@ function App() {
       wrongAnswers: 0,
       timeTaken: 0,
     });
-    // setQuestions([]);
+    window.location.reload();
+    setTimeRemaining(10);
   };
 
   return (
@@ -177,6 +164,8 @@ function App() {
           onEditQuiz={onEditQuiz}
           restartQuiz={restartQuiz}
           showEditForm={showEditForm}
+          timeRemaining={timeRemaining}
+          setShowEditForm={setShowEditForm}
         />
       ) : (
         <Results
@@ -190,7 +179,7 @@ function App() {
           setShowResults={setShowResults}
         />
       )}
-      <p>{timer}s</p>
+      {/* <p>{timeRemaining}s</p> */}
     </div>
   );
 }

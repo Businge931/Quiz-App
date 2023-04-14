@@ -16,7 +16,9 @@ function Quiz({
   category,
   onEditQuiz,
   showEditForm,
+  setShowEditForm,
   restartQuiz,
+  timeRemaining,
 }) {
   const [showWarning, setShowWarning] = useState(false);
 
@@ -43,7 +45,9 @@ function Quiz({
             Add Questions
           </button>
         )}
-        {showEditForm && <EditForm />}
+        {showEditForm && (
+          <EditForm questions={questions} setShowEditForm={setShowEditForm} />
+        )}
       </div>
     );
   }
@@ -59,12 +63,17 @@ function Quiz({
               </h2>
             )}
             <div className="quiz-question_number">
-              <span className="active-question-no">
-                {addLeadingZero(activeQuestion + 1)}
-              </span>
-              <span className="total-question">
-                /{addLeadingZero(questions?.length)}
-              </span>
+              <div>
+                <span className="active-question-no">
+                  {addLeadingZero(activeQuestion + 1)}
+                </span>
+                <span className="total-question">
+                  /{addLeadingZero(questions?.length)}
+                </span>
+              </div>
+              <p className="timer">
+                {timeRemaining} <span>seconds Left</span>
+              </p>
             </div>
             {questions && (
               <p className="quiz-text">

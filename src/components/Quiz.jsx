@@ -71,9 +71,9 @@ function Quiz({
                   /{addLeadingZero(questions?.length)}
                 </span>
               </div>
-              {/* <p className="timer">
+              <p className="timer">
                 {timeRemaining} <span>seconds Left</span>
-              </p> */}
+              </p>
             </div>
             {questions && (
               <p className="quiz-text">

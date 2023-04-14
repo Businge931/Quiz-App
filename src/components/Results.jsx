@@ -9,8 +9,8 @@ const Results = ({
   onAttemptAgain,
   onEditQuiz,
   showEditForm,
-  setShowEditForm,
   setShowResults,
+  setShowEditForm,
 }) => {
   return (
     <>

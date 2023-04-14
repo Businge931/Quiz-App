@@ -32,6 +32,7 @@ const EditForm = ({ setShowEditForm, setShowResults }) => {
   const handleSaveForm = () => {
     setShowEditForm(false);
     setShowResults(false);
+    window.location.reload();
   };
 
   const addChoice = (e) => {

@@ -63,7 +63,7 @@ function Form({
           <select
             className="select"
             onChange={(e) => setGradingPoints(e.target.value)}
-            // value={gra}
+           
           >
             <option value={5}>5</option>
             <option value={10}>10</option>

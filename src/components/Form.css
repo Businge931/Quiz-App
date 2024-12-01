@@ -40,15 +40,7 @@ input:focus {
 .select:focus {
   border: none;
 }
-/* .select option {
-  background-color: var(--color-white);
-  padding: 10px;
-  margin: 10px;
-}
-.select option:hover {
-  background: var(--color-bg_light);
-  color: var(--color-white);
-} */
+
 .description-options {
   font-size: 18px;
   color: var(--color-bg_light);

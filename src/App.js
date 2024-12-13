@@ -26,21 +26,21 @@ function App() {
     wrongAnswers: 0,
   });
   const [timeRemaining, setTimeRemaining] = useState(50);
-  const [countdownInterval, setCountdownInterval] = useState(null);
+  // const [countdownInterval, setCountdownInterval] = useState(null);
 
-  const startCountdown = (questionIndex) => {
-    clearInterval(countdownInterval);
-    const newCountdownInterval = setInterval(() => {
-      setTimeRemaining((countdown) => countdown - 1);
-    }, 1000);
-    setCountdownInterval(newCountdownInterval);
-    setTimeout(() => {
-      clearInterval(newCountdownInterval);
-      if (timeRemaining === 0) {
-        onClickNext(questionIndex);
-      }
-    }, 60000);
-  };
+  // const startCountdown = (questionIndex) => {
+  //   clearInterval(countdownInterval);
+  //   const newCountdownInterval = setInterval(() => {
+  //     setTimeRemaining((countdown) => countdown - 1);
+  //   }, 1000);
+  //   setCountdownInterval(newCountdownInterval);
+  //   setTimeout(() => {
+  //     clearInterval(newCountdownInterval);
+  //     if (timeRemaining === 0) {
+  //       onClickNext(questionIndex);
+  //     }
+  //   }, 60000);
+  // };
 
   const onStartQuiz = () => {
     setIsLoading(true);
@@ -62,7 +62,7 @@ function App() {
     });
 
     setTimeRemaining(60);
-    startCountdown(activeQuestion);
+    // startCountdown(activeQuestion);
 
     //remember to unsubscribe from database when component unmounts
     return () => {
@@ -106,7 +106,7 @@ function App() {
     if (questions && activeQuestion !== questions.length - 1) {
       setActiveQuestion((prevQtn) => prevQtn + 1);
       setTimeRemaining(60);
-      startCountdown((prevQtn) => prevQtn + 1);
+      // startCountdown((prevQtn) => prevQtn + 1);
     } else {
       setActiveQuestion(0);
       setShowResults(true);

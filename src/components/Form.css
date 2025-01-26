@@ -34,7 +34,7 @@ input:focus {
 }
 .select {
   padding: 10px 15px;
-  border-radius: 5px;
+  border-radius: 6px;
   font-size: 18px;
 }
 .select:focus {
@@ -50,7 +50,7 @@ input:focus {
   color: var(--color-white);
   background-color: var(--color-bg_light);
   border: 1px solid var(--color-white);
-  border-radius: 5px;
+  border-radius: 6px;
   text-transform: uppercase;
   cursor: pointer;
 }
